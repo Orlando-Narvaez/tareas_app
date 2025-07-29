@@ -1,2 +1,23 @@
 # Node modules
 node_modules/
+
+# Entornos
+.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Compilación y caché
+dist/
+build/
+.cache/
+
+# IDEs y editores
+.vscode/
+*.swp
+*.sublime-project
+*.sublime-workspace
