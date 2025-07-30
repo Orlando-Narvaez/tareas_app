@@ -3,21 +3,34 @@ node_modules/
 
 # Entornos
 .env
+.env.*.local
 
 # Archivos del sistema
 .DS_Store
 Thumbs.db
+*.tmp
+*.temp
 
 # Logs
 *.log
+npm-debug.log*
 
 # Compilación y caché
 dist/
 build/
+.vite/
 .cache/
+coverage/
+*.eslintcache
 
 # IDEs y editores
 .vscode/
+.idea/
 *.swp
 *.sublime-project
 *.sublime-workspace
+
+# Otros
+yarn.lock
+pnpm-lock.yaml
+.vite.svg
