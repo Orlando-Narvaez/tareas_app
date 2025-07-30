@@ -1,12 +1,14 @@
-// src/index.js
-
 import express from "express";
+import cors from "cors";
 import tareaRoutes from "./routes/tareaRoutes.js";
 
 const app = express();
 const PORT = 3001;
 
-// Middleware para leer JSON
+// ✅ Middleware de CORS (debe estar antes de las rutas)
+app.use(cors());
+
+// ✅ Middleware para leer JSON
 app.use(express.json());
 
 // Ruta base de prueba
