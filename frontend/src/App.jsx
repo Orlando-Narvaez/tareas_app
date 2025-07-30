@@ -4,6 +4,9 @@ import axios from "axios";
 function App() {
   const [tareas, setTareas] = useState([]);
   const [nombre, setNombre] = useState("");
+  const [editandoId, setEditandoId] = useState(null);
+  const [nombreEditado, setNombreEditado] = useState("");
+
 
   // Cargar tareas al inicio
   useEffect(() => {
@@ -29,6 +32,34 @@ function App() {
     }
   };
 
+  // Actualizar tarea
+  const actualizarTarea = async (id) => {
+    try {
+      const res = await axios.put(`http://localhost:3001/api/tareas/${id}`, {
+        nombre: nombreEditado,
+      });
+
+      setTareas(tareas.map((tarea) =>
+        tarea.id === id ? res.data : tarea
+      ));
+      setEditandoId(null);
+      setNombreEditado("");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Eliminar tarea
+  const eliminarTarea = async (id) => {
+    console.log("Eliminando tarea con ID:", id); // ← línea de prueba
+    try {
+      await axios.delete(`http://localhost:3001/api/tareas/${id}`);
+      setTareas(tareas.filter((tarea) => tarea.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div style={{ padding: "2rem" }}>
       <h1>Lista de Tareas</h1>
@@ -45,7 +76,35 @@ function App() {
 
       <ul>
         {tareas.map((tarea) => (
-          <li key={tarea.id}>{tarea.nombre}</li>
+          <li key={tarea.id}>
+            {editandoId === tarea.id ? (
+              <>
+                <input
+                  type="text"
+                  value={nombreEditado}
+                  onChange={(e) => setNombreEditado(e.target.value)}
+                />
+                <button onClick={() => actualizarTarea(tarea.id)}>Guardar</button>
+                <button onClick={() => setEditandoId(null)}>Cancelar</button>
+              </>
+            ) : (
+              <>
+                {tarea.nombre}
+                <button onClick={() => eliminarTarea(tarea.id)} style={{ marginLeft: "10px" }}>
+                  ❌
+                </button>
+                <button
+                  onClick={() => {
+                    setEditandoId(tarea.id);
+                    setNombreEditado(tarea.nombre);
+                  }}
+                  style={{ marginLeft: "5px" }}
+                >
+                  ✏️
+                </button>
+              </>
+            )}
+          </li>
         ))}
       </ul>
     </div>
