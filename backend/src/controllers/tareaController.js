@@ -9,7 +9,16 @@ import {
 } from "../models/tareaModel.js";
 
 export const listar = (req, res) => {
-  res.json(obtenerTareas());
+  let tareas = obtenerTareas();
+
+  // Permitir ordenamiento por fecha desde el query string
+  if (req.query.orden === "fecha") {
+    tareas = [...tareas].sort((a, b) =>
+      new Date(a.fechaVencimiento || 0) - new Date(b.fechaVencimiento || 0)
+    );
+  }
+
+  res.json(tareas);
 };
 
 export const crear = (req, res) => {
