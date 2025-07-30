@@ -10,39 +10,41 @@ Aplicación web para gestión de tareas con usuarios registrados. Permite crear,
 - JWT para autenticación
 - Git + GitHub
 
-## 📦 Estructura del proyecto
+## 1. Clonar el repositorio
 
-tareas_app/
-├── backend/
-├── frontend/
-├── .gitignore
-├── README.md
-└── LICENSE
+```bash
+git clone https://github.com/tuusuario/tareas_app.git
+cd tareas_app
+```
 
+## 2. Instala las dependencias del frontend y backend:
 
-## 📋 Requisitos previos
-
-- [Node.js y npm](https://nodejs.org/) (versión LTS)
-- Git
-- Visual Studio Code u otro editor
-- Cuenta gratuita en MongoDB Atlas
-
-## 🛠️ Instalación
-
-1. Clona el repositorio:
-
-git clone https://github.com/tu_usuario/tareas_app.git
-
-2. Instala las dependencias del frontend y backend:
-
+Backend
+```bash
 cd backend
 npm install
+```
 
+Frontend
+```bash
 cd ../frontend
 npm install
+```
 
+## 3. Acceder a la aplicación
 
-3. Configura tu archivo `.env` en el backend (usa `.env.example` como referencia)
+API backend: http://localhost:3001
+Frontend: http://localhost:5173 (por defecto con Vite)
+
+## 🛠 Funcionalidades
+ - Crear nueva tarea
+ - Listar tareas existentes
+ - Editar una tarea
+ - Eliminar tarea
+ - Comunicación entre frontend y backend
+
+## 📬 Contacto
+Desarrollado por Orlando – orlando1999narvaez@gmail.com
 
 ## 📄 Licencia
 
