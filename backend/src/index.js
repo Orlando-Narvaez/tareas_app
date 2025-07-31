@@ -1,11 +1,13 @@
 import express from "express";
 import cors from "cors";
 import tareaRoutes from "./routes/tareaRoutes.js";
+import sequelize from "./config/database.js";
+import "./models/tareaModel.js";
 
 const app = express();
 const PORT = 3001;
 
-// ✅ Middleware de CORS (debe estar antes de las rutas)
+// ✅ Middleware de CORS
 app.use(cors());
 
 // ✅ Middleware para leer JSON
@@ -19,7 +21,13 @@ app.get("/", (req, res) => {
 // Rutas de tareas
 app.use("/api/tareas", tareaRoutes);
 
-// Levantar el servidor
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+// Conectar y sincronizar base de datos antes de levantar el servidor
+sequelize.sync().then(() => {
+  console.log("✅ Base de datos sincronizada correctamente");
+
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+  });
+}).catch((error) => {
+  console.error("❌ Error al sincronizar la base de datos:", error);
 });

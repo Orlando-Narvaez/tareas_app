@@ -1,45 +1,66 @@
 // src/controllers/tareaController.js
 
-import {
-  crearTarea,
-  obtenerTareas,
-  obtenerTareaPorId,
-  actualizarTarea,
-  eliminarTarea,
-} from "../models/tareaModel.js";
+import Tarea from "../models/Tarea.js";
 
-export const listar = (req, res) => {
-  let tareas = obtenerTareas();
+// ✅ Listar todas las tareas (con ordenamiento opcional por fecha)
+export const listar = async (req, res) => {
+  try {
+    let opciones = {};
+    
+    if (req.query.orden === "fecha") {
+      opciones.order = [["fechaVencimiento", "ASC"]];
+    }
 
-  // Permitir ordenamiento por fecha desde el query string
-  if (req.query.orden === "fecha") {
-    tareas = [...tareas].sort((a, b) =>
-      new Date(a.fechaVencimiento || 0) - new Date(b.fechaVencimiento || 0)
-    );
+    const tareas = await Tarea.findAll(opciones);
+    res.json(tareas);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener las tareas" });
   }
-
-  res.json(tareas);
 };
 
-export const crear = (req, res) => {
-  const nueva = crearTarea(req.body);
-  res.status(201).json(nueva);
+// ✅ Crear una nueva tarea
+export const crear = async (req, res) => {
+  try {
+    const nueva = await Tarea.create(req.body);
+    res.status(201).json(nueva);
+  } catch (error) {
+    res.status(400).json({ error: "Error al crear la tarea" });
+  }
 };
 
-export const obtener = (req, res) => {
-  const tarea = obtenerTareaPorId(req.params.id);
-  if (!tarea) return res.status(404).json({ error: "No encontrada" });
-  res.json(tarea);
+// ✅ Obtener una tarea por su ID
+export const obtener = async (req, res) => {
+  try {
+    const tarea = await Tarea.findByPk(req.params.id);
+    if (!tarea) return res.status(404).json({ error: "Tarea no encontrada" });
+    res.json(tarea);
+  } catch (error) {
+    res.status(500).json({ error: "Error al buscar la tarea" });
+  }
 };
 
-export const editar = (req, res) => {
-  const actualizada = actualizarTarea(req.params.id, req.body);
-  if (!actualizada) return res.status(404).json({ error: "No encontrada" });
-  res.json(actualizada);
+// ✅ Editar una tarea por ID
+export const editar = async (req, res) => {
+  try {
+    const tarea = await Tarea.findByPk(req.params.id);
+    if (!tarea) return res.status(404).json({ error: "Tarea no encontrada" });
+
+    await tarea.update(req.body);
+    res.json(tarea);
+  } catch (error) {
+    res.status(400).json({ error: "Error al actualizar la tarea" });
+  }
 };
 
-export const eliminar = (req, res) => {
-  const eliminada = eliminarTarea(req.params.id);
-  if (!eliminada) return res.status(404).json({ error: "No encontrada" });
-  res.json(eliminada);
+// ✅ Eliminar una tarea por ID
+export const eliminar = async (req, res) => {
+  try {
+    const tarea = await Tarea.findByPk(req.params.id);
+    if (!tarea) return res.status(404).json({ error: "Tarea no encontrada" });
+
+    await tarea.destroy();
+    res.json({ mensaje: "Tarea eliminada correctamente" });
+  } catch (error) {
+    res.status(500).json({ error: "Error al eliminar la tarea" });
+  }
 };
