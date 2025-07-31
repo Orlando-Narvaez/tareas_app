@@ -15,6 +15,17 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Bases de datos SQLite
+*.sqlite
+*.sqlite3
+
+# Archivos de configuración de nodemon
+nodemon.json
+
+# Archivos de Sequelize (en caso de usar migraciones)
+migrations/
+seeders/
+
 # Compilación y caché
 dist/
 build/
